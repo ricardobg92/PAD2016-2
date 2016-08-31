@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://blog.regehr.org/archives/490 -->
+<html lang="en-US" class="js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+		<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<title>Race Condition vs. Data Race – Embedded in Academia</title>
+<link rel="dns-prefetch" href="http://s0.wp.com/">
+<link rel="dns-prefetch" href="http://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Embedded in Academia » Feed" href="http://blog.regehr.org/feed">
+<link rel="alternate" type="application/rss+xml" title="Embedded in Academia » Comments Feed" href="http://blog.regehr.org/comments/feed">
+<link rel="alternate" type="application/rss+xml" title="Embedded in Academia » Race Condition vs. Data Race Comments Feed" href="http://blog.regehr.org/archives/490/feed">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/blog.regehr.org\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.6"}};
+			!function(a,b,c){function d(a){var c,d,e,f,g,h=b.createElement("canvas"),i=h.getContext&&h.getContext("2d"),j=String.fromCharCode;if(!i||!i.fillText)return!1;switch(i.textBaseline="top",i.font="600 32px Arial",a){case"flag":return i.fillText(j(55356,56806,55356,56826),0,0),!(h.toDataURL().length<3e3)&&(i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,65039,8205,55356,57096),0,0),c=h.toDataURL(),i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,55356,57096),0,0),d=h.toDataURL(),c!==d);case"diversity":return i.fillText(j(55356,57221),0,0),e=i.getImageData(16,16,1,1).data,f=e[0]+","+e[1]+","+e[2]+","+e[3],i.fillText(j(55356,57221,55356,57343),0,0),e=i.getImageData(16,16,1,1).data,g=e[0]+","+e[1]+","+e[2]+","+e[3],f!==g;case"simple":return i.fillText(j(55357,56835),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode8":return i.fillText(j(55356,57135),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode9":return i.fillText(j(55358,56631),0,0),0!==i.getImageData(16,16,1,1).data[0]}return!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i;for(i=Array("simple","flag","unicode8","diversity","unicode9"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Race Condition vs. Data Race – Embedded in Academia_files/wp-emoji-release.min.js" type="text/javascript"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="mtq_CoreStyleSheets-css" href="./Race Condition vs. Data Race – Embedded in Academia_files/mtq_core_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="mtq_ThemeStyleSheets-css" href="./Race Condition vs. Data Race – Embedded in Academia_files/mtq_theme_style.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentysixteen-jetpack-css" href="./Race Condition vs. Data Race – Embedded in Academia_files/twentysixteen.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentysixteen-fonts-css" href="./Race Condition vs. Data Race – Embedded in Academia_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="genericons-css" href="./Race Condition vs. Data Race – Embedded in Academia_files/genericons.css" type="text/css" media="all">
+<link rel="stylesheet" id="twentysixteen-style-css" href="./Race Condition vs. Data Race – Embedded in Academia_files/style.css" type="text/css" media="all">
+<!--[if lt IE 10]>
+<link rel='stylesheet' id='twentysixteen-ie-css'  href='http://blog.regehr.org/wp-content/themes/twentysixteen/css/ie.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentysixteen-ie8-css'  href='http://blog.regehr.org/wp-content/themes/twentysixteen/css/ie8.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='twentysixteen-ie7-css'  href='http://blog.regehr.org/wp-content/themes/twentysixteen/css/ie7.css?ver=20160816' type='text/css' media='all' />
+<![endif]-->
+<link rel="stylesheet" id="jetpack_css-css" href="./Race Condition vs. Data Race – Embedded in Academia_files/jetpack.css" type="text/css" media="all">
+<script type="text/javascript" src="./Race Condition vs. Data Race – Embedded in Academia_files/jquery.js"></script>
+<script type="text/javascript" src="./Race Condition vs. Data Race – Embedded in Academia_files/jquery-migrate.min.js"></script>
+<script type="text/javascript" src="./Race Condition vs. Data Race – Embedded in Academia_files/script.js"></script>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='http://blog.regehr.org/wp-content/themes/twentysixteen/js/html5.js?ver=3.7.3'></script>
+<![endif]-->
+<link rel="https://api.w.org/" href="http://blog.regehr.org/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.regehr.org/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.regehr.org/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Guidelines for Teaching Assistants" href="http://blog.regehr.org/archives/489">
+<link rel="next" title="Finding and Understanding Bugs in C Compilers" href="http://blog.regehr.org/archives/492">
+<meta name="generator" content="WordPress 4.6">
+<link rel="canonical" href="http://blog.regehr.org/archives/490">
+<link rel="shortlink" href="http://blog.regehr.org/?p=490">
+<link rel="alternate" type="application/json+oembed" href="http://blog.regehr.org/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fblog.regehr.org%2Farchives%2F490">
+<link rel="alternate" type="text/xml+oembed" href="http://blog.regehr.org/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fblog.regehr.org%2Farchives%2F490&amp;format=xml">
+<!-- <meta name="NextGEN" version="2.1.49" /> -->
+<style type="text/css">img#wpstats{display:none}</style><style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #ffffff; }
+</style>
+<style type="text/css" id="syntaxhighlighteranchor"></style>
+</head>
+
+<body class="single single-post postid-490 single-format-standard custom-background">
+<div id="page" class="site">
+	<div class="site-inner">
+		<a class="skip-link screen-reader-text" href="http://blog.regehr.org/archives/490#content">Skip to content</a>
+
+		<header id="masthead" class="site-header" role="banner">
+			<div class="site-header-main">
+				<div class="site-branding">
+					
+											<p class="site-title"><a href="http://blog.regehr.org/" rel="home">Embedded in Academia</a></p>
+											<p class="site-description">John Regehr, Professor of Computer Science, University of Utah, USA</p>
+									</div><!-- .site-branding -->
+
+							</div><!-- .site-header-main -->
+
+					</header><!-- .site-header -->
+
+		<div id="content" class="site-content">
+
+<div id="primary" class="content-area">
+	<main id="main" class="site-main" role="main">
+		
+<article id="post-490" class="post-490 post type-post status-publish format-standard hentry category-cs category-software-correctness">
+	<header class="entry-header">
+		<h1 class="entry-title">Race Condition vs. Data Race</h1>	</header><!-- .entry-header -->
+
+	
+	
+	<div class="entry-content">
+		<p>A <em>race condition</em> is a flaw that occurs when the timing or ordering of events affects a program’s correctness. Generally speaking, some kind of external timing or ordering non-determinism is needed to produce a race condition; typical examples are context switches, OS signals, memory operations on a multiprocessor, and hardware interrupts.</p>
+<p>A <em>data race</em> happens when there are two memory accesses in a program where both:</p>
+<ul>
+<li>target the same location</li>
+<li>are performed concurrently by two threads</li>
+<li>are not reads</li>
+<li>are not synchronization operations</li>
+</ul>
+<p>There are other definitions but this one is fine; it’s from Sebastian Burckhardt at Microsoft Research. Two aspects of the definition require a bit of care. “Concurrently” means there wasn’t anything like a lock that forced one operation to happen before or after the other. “Are not synchronization operations” refers to the fact that a program probably contains special memory operations, such as those used to implement locks, that are not themselves synchronized. By definition, these do not trigger data races.</p>
+<p>In practice there is considerable overlap: many race conditions are due to data races, and many data races lead to race conditions. On the other hand, we can have race conditions without data races and data races without race conditions.  Let’s start with a simple function for moving money between two bank accounts:</p>
+<blockquote>
+<pre><strong>transfer1 (amount, account_from, account_to) {
+  if (account_from.balance &lt; amount) return NOPE;
+  account_to.balance += amount;
+  account_from.balance -= amount;
+  return YEP;
+}</strong></pre>
+</blockquote>
+<p>Of course this is not how banks really move money, but the example is useful anyway because we understand intuitively that account balances should be non-negative and that a transfer must not create or lose money. When called from multiple threads without external synchronization, this function admits both data races (multiple threads can concurrently try to update an account balance) and race conditions (in a parallel context it will create or lose money). We can try to fix it like this:</p>
+<blockquote>
+<pre><strong>transfer2 (amount, account_from, account_to) {
+  atomic {
+    bal = account_from.balance;
+  }
+  if (bal &lt; amount) return NOPE;
+  atomic {
+    account_to.balance += amount;
+  }
+  atomic {
+    account_from.balance -= amount;
+  }
+  return YEP;
+}</strong></pre>
+</blockquote>
+<p>Here “atomic” is implemented by the language runtime, perhaps simply by acquiring a thread mutex at the start of the atomic block and releasing it at the end, perhaps using some sort of transaction, or perhaps by disabling interrupts — for purposes of the example it doesn’t matter as long as the code inside the block executes atomically.</p>
+<p>transfer2 has no data races when called by multiple threads, but obviously it is an extremely silly function containing race conditions that will cause it to create or lose money almost as badly as the unsynchronized function. From a technical point of view, the problem with transfer2 is that it permits other threads to see memory states where a key invariant — conservation of money — is broken.</p>
+<p>To preserve the invariant, we have to use a better locking strategy.  As long as atomic’s semanatics are to end the atomic section on any exit from the block, the solution can be blunt:</p>
+<blockquote>
+<pre><strong>transfer3 (amount, account_from, account_to) {
+  atomic {
+    if (account_from.balance &lt; amount) return NOPE;
+    account_to.balance += amount;
+    account_from.balance -= amount;
+    return YEP;
+  }
+}</strong></pre>
+</blockquote>
+<p>This function is free of data races and also of race conditions. Can we change it a bit to make an example that has data races but no race conditions? That is simple:</p>
+<blockquote>
+<pre><strong>transfer4 (amount, account_from, account_to) {
+  account_from.activity = true;
+  account_to.activity = true;
+  atomic {
+    if (account_from.balance &lt; amount) return NOPE;
+    account_to.balance += amount;
+    account_from.balance -= amount;
+    return YEP;
+  }
+}</strong></pre>
+</blockquote>
+<p>Here we are setting flags indicating that some sort of activity occurred on the accounts. Are the data races on these flags harmful? Perhaps not. For example, in the evening we might shut down all transaction-processing threads and then select 10 random accounts that are flagged as having had activity for manual auditing. For this purpose, the data races are entirely harmless.</p>
+<p>We’ve ended up covering all possibilities:</p>
+<table border="0" cellspacing="5">
+<tbody>
+<tr>
+<td></td>
+<td>data race</td>
+<td>no data race</td>
+</tr>
+<tr>
+<td>race condition</td>
+<td bgcolor="#ff99cc">transfer1</td>
+<td bgcolor="#ff99cc">transfer2</td>
+</tr>
+<tr>
+<td>no race condition</td>
+<td bgcolor="#ff99cc">transfer4</td>
+<td bgcolor="#ff99cc">transfer3</td>
+</tr>
+</tbody>
+</table>
+<p>The point of this exercise was to look at transfer2 and transfer4, which illustrate that freedom from data races is a very weak property that is neither necessary nor sufficient for establishing the concurrency correctness of a computer program. Why does anyone care about data races at all? As far as I can tell, there are two reasons. First, a data-race-free  program can, with some care, be shown to be independent of the whims of  whatever weak memory model it sits on. This lets us breathe easier because reasoning about racy programs running on weak memory models is near impossible for humans. Second, data races are easy to find automatically — notice from the definition that it simply requires memory accesses to be monitored; no knowledge of application semantics is required. Race conditions, on the other hand, are intimately tied to application-level invariants, making them far thornier to reason about (quick — what are all the invariants in Firefox? In Linux? In MySQL?).</p>
+<p>Everything in this post is pretty obvious, but I’ve observed real confusion about the distinction between data race and race condition by people who should know better (for example because they are doing research on concurrency correctness). Muddying the waters further, even when people are perfectly clear on the underlying concepts, they sometimes say “race condition” when the really mean “data race.” Certainly I’ve caught myself doing this.</p>
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+		<span class="byline"><span class="author vcard"><span class="screen-reader-text">Author </span> <a class="url fn n" href="http://blog.regehr.org/archives/author/admin">regehr</a></span></span><span class="posted-on"><span class="screen-reader-text">Posted on </span><a href="http://blog.regehr.org/archives/490" rel="bookmark"><time class="entry-date published" datetime="2011-03-13T21:24:19+00:00">March 13, 2011</time><time class="updated" datetime="2011-03-13T23:31:05+00:00">March 13, 2011</time></a></span><span class="cat-links"><span class="screen-reader-text">Categories </span><a href="http://blog.regehr.org/archives/category/cs" rel="category tag">Computer Science</a>, <a href="http://blog.regehr.org/archives/category/software-correctness" rel="category tag">Software Correctness</a></span>			</footer><!-- .entry-footer -->
+</article><!-- #post-## -->
+
+<div id="comments" class="comments-area">
+
+			<h2 class="comments-title">
+			1 thought on “Race Condition vs. Data Race”		</h2>
+
+		
+		<ol class="comment-list">
+					<li id="comment-2333" class="comment even thread-even depth-1">
+			<article id="div-comment-2333" class="comment-body">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+												<b class="fn"><a href="http://femalecomputerscientist.blogger.com/" rel="external nofollow" class="url">FCS</a></b> <span class="says">says:</span>					</div><!-- .comment-author -->
+
+					<div class="comment-metadata">
+						<a href="http://blog.regehr.org/archives/490#comment-2333">
+							<time datetime="2011-03-16T17:01:52+00:00">
+								March 16, 2011 at 5:01 pm							</time>
+						</a>
+											</div><!-- .comment-metadata -->
+
+									</footer><!-- .comment-meta -->
+
+				<div class="comment-content">
+					<p>It’s terribly punny/dorky of me, but reading your post it just occurred to me one could start a blog called “Race Condition” about being a person of color and being a computer scientist.</p>
+				</div><!-- .comment-content -->
+
+							</article><!-- .comment-body -->
+</li><!-- #comment-## -->
+		</ol><!-- .comment-list -->
+
+		
+	
+			<p class="no-comments">Comments are closed.</p>
+	
+	
+</div><!-- .comments-area -->
+
+	<nav class="navigation post-navigation" role="navigation">
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="http://blog.regehr.org/archives/489" rel="prev"><span class="meta-nav" aria-hidden="true">Previous</span> <span class="screen-reader-text">Previous post:</span> <span class="post-title">Guidelines for Teaching Assistants</span></a></div><div class="nav-next"><a href="http://blog.regehr.org/archives/492" rel="next"><span class="meta-nav" aria-hidden="true">Next</span> <span class="screen-reader-text">Next post:</span> <span class="post-title">Finding and Understanding Bugs in C Compilers</span></a></div></div>
+	</nav>
+	</main><!-- .site-main -->
+
+	
+</div><!-- .content-area -->
+
+
+	<aside id="secondary" class="sidebar widget-area" role="complementary">
+		<section id="search-5" class="widget widget_search">
+<form role="search" method="get" class="search-form" action="http://blog.regehr.org/">
+	<label>
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="search-field" placeholder="Search …" value="" name="s">
+	</label>
+	<button type="submit" class="search-submit"><span class="screen-reader-text">Search</span></button>
+</form>
+</section><section id="archives-4" class="widget widget_archive"><h2 class="widget-title">Archives</h2>		<ul>
+			<li><a href="http://blog.regehr.org/archives/date/2016/08">August 2016</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2016/06">June 2016</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2016/05">May 2016</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2016/04">April 2016</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2016/03">March 2016</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2016/02">February 2016</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2015/12">December 2015</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2015/11">November 2015</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2015/09">September 2015</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2015/07">July 2015</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2015/06">June 2015</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2015/05">May 2015</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2015/04">April 2015</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2015/03">March 2015</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2015/02">February 2015</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2015/01">January 2015</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/12">December 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/11">November 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/10">October 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/08">August 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/07">July 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/06">June 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/05">May 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/04">April 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/03">March 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/02">February 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2014/01">January 2014</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/12">December 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/11">November 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/10">October 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/09">September 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/08">August 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/07">July 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/06">June 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/05">May 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/04">April 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/03">March 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/02">February 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2013/01">January 2013</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/12">December 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/11">November 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/10">October 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/09">September 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/08">August 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/07">July 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/06">June 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/05">May 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/04">April 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/03">March 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/02">February 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2012/01">January 2012</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/12">December 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/11">November 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/10">October 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/09">September 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/08">August 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/07">July 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/06">June 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/05">May 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/04">April 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/03">March 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/02">February 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2011/01">January 2011</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/12">December 2010</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/11">November 2010</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/10">October 2010</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/09">September 2010</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/08">August 2010</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/07">July 2010</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/06">June 2010</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/05">May 2010</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/04">April 2010</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/03">March 2010</a></li>
+	<li><a href="http://blog.regehr.org/archives/date/2010/02">February 2010</a></li>
+		</ul>
+		</section>	</aside><!-- .sidebar .widget-area -->
+
+		</div><!-- .site-content -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+			
+			
+			<div class="site-info">
+								<span class="site-title"><a href="http://blog.regehr.org/" rel="home">Embedded in Academia</a></span>
+				<a href="https://wordpress.org/">Proudly powered by WordPress</a>
+			</div><!-- .site-info -->
+		</footer><!-- .site-footer -->
+	</div><!-- .site-inner -->
+</div><!-- .site -->
+
+<!-- ngg_resource_manager_marker --><script type="text/javascript" src="./Race Condition vs. Data Race – Embedded in Academia_files/devicepx-jetpack.js"></script>
+<script type="text/javascript" src="./Race Condition vs. Data Race – Embedded in Academia_files/skip-link-focus-fix.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Race Condition vs. Data Race – Embedded in Academia_files/functions.js"></script>
+<script type="text/javascript" src="./Race Condition vs. Data Race – Embedded in Academia_files/wp-embed.min.js"></script>
+<script type="text/javascript" src="./Race Condition vs. Data Race – Embedded in Academia_files/e-201634.js" async="" defer=""></script>
+<script type="text/javascript">
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:4.2.2',blog:'11993579',post:'490',tz:'-6',srv:'blog.regehr.org'} ]);
+	_stq.push([ 'clickTrackerInit', '11993579', '490' ]);
+</script>
+
+
+<img src="./Race Condition vs. Data Race – Embedded in Academia_files/g.gif" alt=":)" width="6" height="5" id="wpstats" scale="0"></body></html>
