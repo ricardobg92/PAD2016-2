@@ -1,0 +1,275 @@
+==4036== drd, a thread error detector
+==4036== Copyright (C) 2006-2015, and GNU GPL'd, by Bart Van Assche.
+==4036== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==4036== Command: ./prime_pthread
+==4036== Parent PID: 3496
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting store by thread 1 at 0xffefffd7c size 4
+==4036==    at 0x4008E2: main (prime_pthread.c:55)
+==4036== Location 0xffefffd7c is 0 bytes inside local var "i"
+==4036== declared at prime_pthread.c:48, in frame #0 of thread 1
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+==4036== Thread 3:
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting load by thread 3 at 0x00601090 size 4
+==4036==    at 0x4007A9: is_prime (prime_pthread.c:19)
+==4036==    by 0x400828: work (prime_pthread.c:38)
+==4036==    by 0x4C3458B: ??? (in /usr/lib/valgrind/vgpreload_drd-amd64-linux.so)
+==4036==    by 0x515C6F9: start_thread (pthread_create.c:333)
+==4036== Location 0x601090 is 0 bytes inside pflag[4],
+==4036== a global variable declared at prime_pthread.c:9
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting load by thread 3 at 0x00601064 size 4
+==4036==    at 0x40082D: work (prime_pthread.c:39)
+==4036==    by 0x4C3458B: ??? (in /usr/lib/valgrind/vgpreload_drd-amd64-linux.so)
+==4036==    by 0x515C6F9: start_thread (pthread_create.c:333)
+==4036== Location 0x601064 is 0 bytes inside global var "total"
+==4036== declared at prime_pthread.c:10
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting load by thread 3 at 0x00601064 size 4
+==4036==    at 0x40083F: work (prime_pthread.c:40)
+==4036==    by 0x4C3458B: ??? (in /usr/lib/valgrind/vgpreload_drd-amd64-linux.so)
+==4036==    by 0x515C6F9: start_thread (pthread_create.c:333)
+==4036== Location 0x601064 is 0 bytes inside global var "total"
+==4036== declared at prime_pthread.c:10
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting store by thread 3 at 0x00601064 size 4
+==4036==    at 0x400848: work (prime_pthread.c:40)
+==4036==    by 0x4C3458B: ??? (in /usr/lib/valgrind/vgpreload_drd-amd64-linux.so)
+==4036==    by 0x515C6F9: start_thread (pthread_create.c:333)
+==4036== Location 0x601064 is 0 bytes inside global var "total"
+==4036== declared at prime_pthread.c:10
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+==4036== Thread 1:
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting store by thread 1 at 0xffefffd7c size 4
+==4036==    at 0x4008ED: main (prime_pthread.c:59)
+==4036== Location 0xffefffd7c is 0 bytes inside local var "i"
+==4036== declared at prime_pthread.c:48, in frame #0 of thread 1
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting load by thread 1 at 0x00601090 size 4
+==4036==    at 0x4007A9: is_prime (prime_pthread.c:19)
+==4036==    by 0x400828: work (prime_pthread.c:38)
+==4036==    by 0x4008FF: main (prime_pthread.c:60)
+==4036== Location 0x601090 is 0 bytes inside pflag[4],
+==4036== a global variable declared at prime_pthread.c:9
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting load by thread 1 at 0x00601064 size 4
+==4036==    at 0x40082D: work (prime_pthread.c:39)
+==4036==    by 0x4008FF: main (prime_pthread.c:60)
+==4036== Location 0x601064 is 0 bytes inside global var "total"
+==4036== declared at prime_pthread.c:10
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting load by thread 1 at 0x00601064 size 4
+==4036==    at 0x40083F: work (prime_pthread.c:40)
+==4036==    by 0x4008FF: main (prime_pthread.c:60)
+==4036== Location 0x601064 is 0 bytes inside global var "total"
+==4036== declared at prime_pthread.c:10
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting store by thread 1 at 0x00601064 size 4
+==4036==    at 0x400848: work (prime_pthread.c:40)
+==4036==    by 0x4008FF: main (prime_pthread.c:60)
+==4036== Location 0x601064 is 0 bytes inside global var "total"
+==4036== declared at prime_pthread.c:10
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting load by thread 1 at 0x00601064 size 4
+==4036==    at 0x400900: main (prime_pthread.c:62)
+==4036== Location 0x601064 is 0 bytes inside global var "total"
+==4036== declared at prime_pthread.c:10
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting store by thread 1 at 0xffefffd7c size 4
+==4036==    at 0x40091C: main (prime_pthread.c:64)
+==4036== Location 0xffefffd7c is 0 bytes inside local var "i"
+==4036== declared at prime_pthread.c:48, in frame #0 of thread 1
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting load by thread 1 at 0x00601064 size 4
+==4036==    at 0x40094E: main (prime_pthread.c:64)
+==4036== Location 0x601064 is 0 bytes inside global var "total"
+==4036== declared at prime_pthread.c:10
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting load by thread 1 at 0x00603f60 size 4
+==4036==    at 0x40092A: main (prime_pthread.c:65)
+==4036== Location 0x603f60 is 0 bytes inside primes[0],
+==4036== a global variable declared at prime_pthread.c:8
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+--4036-- warning: evaluate_Dwarf3_Expr: unhandled DW_OP_ 0xf2
+==4036== Conflicting store by thread 1 at 0xffefffd7c size 4
+==4036==    at 0x400948: main (prime_pthread.c:64)
+==4036== Location 0xffefffd7c is 0 bytes inside local var "i"
+==4036== declared at prime_pthread.c:48, in frame #0 of thread 1
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 2)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 3)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment start (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== Other segment end (thread 4)
+==4036==    (thread finished, call stack no longer available)
+==4036== 
+==4036== 
+==4036== For counts of detected and suppressed errors, rerun with: -v
+==4036== ERROR SUMMARY: 13285 errors from 15 contexts (suppressed: 20 from 11)
