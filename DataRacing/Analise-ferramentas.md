@@ -90,7 +90,7 @@ Podemos perceber com o [log](Logs/exemplo5.log) do Exemplo5 que são detectados 
 
 
 ###2.3 Análise do programa LastPrivate.c
-Com o  [log](Logs/last_private.log) podemos ver que existe apenas um datarace nesse código. Ele acusa apenas um conflito, e esse conflito é uma leitura.
+Com o  [log](Logs/last_private.log) podemos ver que existe apenas um data race nesse código. Ele acusa apenas um conflito, e esse conflito é uma leitura.
 ```
 (linhas 14-15)
 ==4048== Conflicting load by thread 1 at 0xffefffd94 size 4
@@ -131,7 +131,7 @@ Analisando o [log](Logs/prime_omp.log) é possível perceber que 3 variáveis es
 ```
 
 ###2.5 Análise do programa  Prime_Pthread.c
-É possível ver no [log](Logs/prime_pthread.log) que existem 4 dataraces, nas variáveis
+É possível ver no [log](Logs/prime_pthread.log) que existem 4 data races, nas variáveis
 
 1. 0xffefffd7c
 2. 0x00601090
@@ -201,7 +201,7 @@ Analisando o [log](Logs/prime_omp.log) é possível perceber que 3 variáveis es
 ```
 
 ###2.6 Análise do programa Programa1.c
-No [log](Logs/programa1.log) pode-se perceber que o programa possui 5 dataraces em cima das seguintes variáveis:
+No [log](Logs/programa1.log) pode-se perceber que o programa possui 5 data races em cima das seguintes variáveis:
 
 1. 0xffefffd94
 2. 0xffefffd98
@@ -270,3 +270,16 @@ No [log](Logs/programa1.log) pode-se perceber que o programa possui 5 dataraces 
 ==4042== Conflicting load by thread 1 at 0xffefffd98 size 4
 ==4042==    at 0x400941: main (programa1.c:11)
 ```
+
+#3. Comparação entre as ferramentas
+Nessa seção é feito um resumo dos resultados encontrados. Na tabela é possível perceber rapidamente o número de data races encontrados em cada exemplo por cada ferramenta.
+
+| Programa\Ferramenta 	| ODS 	|  Valgrind 	|
+|:-------------------:	|:---:	|:---------:	|
+|     Exemplo2.cpp    	|  1  	|     x     	|
+|     Exemplo3.cpp    	|  1  	|     1     	|
+|     Exemplo5.cpp    	|  2  	|     1     	|
+|    LastPrivate.c    	|  0  	|     1     	|
+|     Prime_OMP.c     	|  3  	|     3     	|
+|   Prime_Pthread.c   	|  7  	|     4     	|
+|     Programa1.c     	|  2  	|     5     	|
