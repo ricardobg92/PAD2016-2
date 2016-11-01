@@ -47,3 +47,226 @@ As Figuras 7 e 8 apresentam os resultados obtidos na verificação do código PT
 ###1.7 Análise do Exemplo Programa1.c
 Conforme pode ser observado pela figura 9, o analisador confirma a ocorrência de data race em torno da variável "total", o qual havia sido identificado na inspeção visual do código.  
 ![Figura-9](Imagens/Programa1-1.png)
+
+##2. Valgrind
+
+O Valgrind é um conjunto de ferramentas, baseado em linhas de comando, que servem tanto para debbuging como para profiling de uma aplicação. Disponível para Linux, ele é capaz de trabalhar com programas em C/C++, Java, Fortran, Python, Perl, etc.
+Composto por 4 ferramentas :
+1. Memcheck : Detector de erros em memória ( Memory Leak , data racing, aetc).
+2. Cachegrind : Simulador de cache.
+3. Callgrind : Profiler para grafo de chamadas.
+4. Massif : Profiler para heap.
+
+###2.1 Análise do programa Exemplo3.cpp
+Analisando o [log](Logs/exemplo3.log) gerado pelo valgrind do Exemplo3, podemos perceber que ele detecta dois conflitos na função addMoney(int) sobre o mesmo endereço de memória, a mesma variável no caso.
+```
+(linhas 7-9)
+==2898== Thread 3:
+==2898== Conflicting load by thread 3 at 0xffefffd20 size 4
+==2898==    at 0x401626: Wallet::addMoney(int) (exemplo3.cpp:20)
+...
+(linhas 24-25)
+==2898== Conflicting store by thread 3 at 0xffefffd20 size 4
+==2898==    at 0x40162F: Wallet::addMoney(int) (exemplo3.cpp:20)
+```
+
+###2.2 Análise do programa Exemplo5.cpp
+Podemos perceber com o [log](Logs/exemplo5.log) do Exemplo5 que são detectados 3 conflitos sobre a mesma variável.
+```
+(linhas 7-9)
+==7928== Thread 3:
+==7928== Conflicting load by thread 3 at 0xffefffd98 size 4
+==7928==    at 0x40089F: main._omp_fn.0 (exemplo5.c:22)
+...
+(linhas 25-26)
+==7928== Conflicting store by thread 3 at 0xffefffd98 size 4
+==7928==    at 0x4008A8: main._omp_fn.0 (exemplo5.c:22)
+...
+(linhas 42-44)
+==7928== Thread 1:
+==7928== Conflicting load by thread 1 at 0xffefffd98 size 4
+==7928==    at 0x400815: main (exemplo5.c:18)
+```
+
+
+###2.3 Análise do programa LastPrivate.c
+Com o  [log](Logs/last_private.log) podemos ver que existe apenas um datarace nesse código. Ele acusa apenas um conflito, e esse conflito é uma leitura.
+```
+(linhas 14-15)
+==4048== Conflicting load by thread 1 at 0xffefffd94 size 4
+==4048==    at 0x400969: main (last_private.c:32)
+```
+
+
+###2.4 Análise do programa Prime_OMP.c
+Analisando o [log](Logs/prime_omp.log) é possível perceber que 3 variáveis estão com conflitos.
+1. 0x006010b0
+2. 0xffefffd90
+3. 0x00604194
+
+```
+(linhas 9-10)
+==4025== Conflicting load by thread 2 at 0x006010b0 size 4
+==4025==    at 0x400929: is_prime 
+...
+(linhas 34-35)
+==4025== Conflicting load by thread 2 at 0xffefffd90 size 4
+==4025==    at 0x400AC4: main._omp_fn.0
+...
+(linhas 58-59)
+==4025== Conflicting load by thread 2 at 0xffefffd90 size 4
+==4025==    at 0x400AD6: main._omp_fn.0 
+...
+(linhas 82-83)
+==4025== Conflicting store by thread 2 at 0xffefffd90 size 4
+==4025==    at 0x400ADF: main._omp_fn.0 
+...
+(linhas 107-108)
+==4025== Conflicting load by thread 1 at 0xffefffd90 size 4
+==4025==    at 0x4009F1: main
+...
+(linhas 142-143)
+==4025== Conflicting load by thread 1 at 0x00604194 size 4
+==4025==    at 0x400A1E: main 
+```
+
+###2.5 Análise do programa  Prime_Pthread.c
+É possível ver no [log](Logs/prime_pthread.log) que existem 4 dataraces, nas variáveis
+
+1. 0xffefffd7c
+2. 0x00601090
+3. 0x00601064
+4. 0x00603f60
+
+```
+(linhas 8-9)
+==4036== Conflicting store by thread 1 at 0xffefffd7c size 4
+==4036==    at 0x4008E2: main (prime_pthread.c:55)
+...
+(linhas 19-20)
+==4036== Conflicting load by thread 3 at 0x00601090 size 4
+==4036==    at 0x4007A9: is_prime (prime_pthread.c:19)
+...
+(linhas 32-33)
+==4036== Conflicting load by thread 3 at 0x00601064 size 4
+==4036==    at 0x40082D: work (prime_pthread.c:39)
+...
+(linhas 44-45)
+==4036== Conflicting load by thread 3 at 0x00601064 size 4
+==4036==    at 0x40083F: work (prime_pthread.c:40)
+...
+(linhas 56-57)
+==4036== Conflicting store by thread 3 at 0x00601064 size 4
+==4036==    at 0x400848: work (prime_pthread.c:40)
+...
+(linhas 69-70)
+==4036== Conflicting store by thread 1 at 0xffefffd7c size 4
+==4036==    at 0x4008ED: main (prime_pthread.c:59) 
+...
+(linhas 99-100)
+==4036== Conflicting load by thread 1 at 0x00601090 size 4
+==4036==    at 0x4007A9: is_prime (prime_pthread.c:19)
+...
+(linhas 111-112)
+==4036== Conflicting load by thread 1 at 0x00601064 size 4
+==4036==    at 0x40082D: work (prime_pthread.c:39)
+...
+(linhas 130-131)
+==4036== Conflicting load by thread 1 at 0x00601064 size 4
+==4036==    at 0x40083F: work (prime_pthread.c:40)
+...
+(linhas 149-150)
+==4036== Conflicting store by thread 1 at 0x00601064 size 4
+==4036==    at 0x400848: work (prime_pthread.c:40)
+...
+(linhas 168-169)
+==4036== Conflicting load by thread 1 at 0x00601064 size 4
+==4036==    at 0x400900: main (prime_pthread.c:62)
+...
+(linhas 186-187)
+==4036== Conflicting store by thread 1 at 0xffefffd7c size 4
+==4036==    at 0x40091C: main (prime_pthread.c:64)
+...
+(linhas 216-217)
+==4036== Conflicting load by thread 1 at 0x00601064 size 4
+==4036==    at 0x40094E: main (prime_pthread.c:64)
+...
+(linhas 234-235)
+==4036== Conflicting load by thread 1 at 0x00603f60 size 4
+==4036==    at 0x40092A: main (prime_pthread.c:65)
+...
+(linhas 244-245)
+==4036== Conflicting store by thread 1 at 0xffefffd7c size 4
+==4036==    at 0x400948: main (prime_pthread.c:64)
+```
+
+###2.6 Análise do programa Programa1.c
+No [log](Logs/programa1.log) pode-se perceber que o programa possui 5 dataraces em cima das seguintes variáveis:
+
+1. 0xffefffd94
+2. 0xffefffd98
+3. 0x05858d96
+4. 0x05858d97
+5. 0x05858da7
+
+```
+(linhas 9-10)
+==4042== Conflicting store by thread 2 at 0xffefffd94 size 4
+==4042==    at 0x40098C: main._omp_fn.0 (programa1.c:14)
+...
+(linhas 29-30)
+==4042== Conflicting load by thread 2 at 0xffefffd94 size 4
+==4042==    at 0x400993: main._omp_fn.0 (programa1.c:16)
+...
+(linhas 49-50)
+==4042== Conflicting load by thread 2 at 0xffefffd94 size 4
+==4042==    at 0x4009A2: main._omp_fn.0 (programa1.c:20)
+...
+(linhas 68-69)
+==4042== Conflicting store by thread 2 at 0x05858d96 size 1
+==4042==    at 0x4C4506C: __GI_mempcpy 
+...
+(linhas 102-103)
+==4042== Conflicting store by thread 2 at 0x05858d97 size 1
+==4042==    at 0x4C4508C: __GI_mempcpy 
+...
+(linhas 135-136)
+==4042== Conflicting store by thread 2 at 0x05858da7 size 1
+==4042==    at 0x4C4506C: __GI_mempcpy 
+...
+(linhas 168-169)
+==4042== Conflicting store by thread 2 at 0xffefffd98 size 4
+==4042==    at 0x4009C3: main._omp_fn.0 (programa1.c:25)
+...
+(linhas 191-192)
+==4042== Conflicting store by thread 1 at 0xffefffd98 size 4
+==4042==    at 0x4009C3: main._omp_fn.0 (programa1.c:25)
+...
+(linhas 224-225)
+==4042== Conflicting load by thread 4 at 0xffefffd98 size 4
+==4042==    at 0x400A50: main._omp_fn.0 (programa1.c:30)
+...
+(linhas 149-150)
+==4036== Conflicting store by thread 1 at 0x00601064 size 4
+==4036==    at 0x400848: work (prime_pthread.c:40)
+...
+(linhas 269-270)
+==4042== Conflicting load by thread 4 at 0xffefffd94 size 4
+==4042==    at 0x400A5D: main._omp_fn.0 (programa1.c:30)
+...
+(linhas 315-316)
+==4042== Conflicting load by thread 1 at 0xffefffd98 size 4
+==4042==    at 0x400A50: main._omp_fn.0 (programa1.c:30)
+...
+(linhas 353-354)
+==4042== Conflicting load by thread 1 at 0xffefffd94 size 4
+==4042==    at 0x400A5D: main._omp_fn.0 (programa1.c:30)
+...
+(linhas 397-398)
+==4042== Conflicting load by thread 1 at 0xffefffd94 size 4
+==4042==    at 0x40093B: main (programa1.c:11)
+...
+(linhas 438-439)
+==4042== Conflicting load by thread 1 at 0xffefffd98 size 4
+==4042==    at 0x400941: main (programa1.c:11)
+```

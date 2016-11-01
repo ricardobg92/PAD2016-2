@@ -1,4 +1,4 @@
-==2898== drd, a thread error detector
+ ==2898== drd, a thread error detector
 ==2898== Copyright (C) 2006-2015, and GNU GPL'd, by Bart Van Assche.
 ==2898== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
 ==2898== Command: ./exemplo3
