@@ -271,7 +271,20 @@ No [log](Logs/programa1.log) pode-se perceber que o programa possui 5 data races
 ==4042==    at 0x400941: main (programa1.c:11)
 ```
 
-#3. Comparação entre as ferramentas
+## Ferramenta Data Race Detector - DRD (Java)
+A ferramenta Data Race Detector consiste em um java agent que deve ser conectado à JVM, passando-o como argumento na mesma linha de comando em que se invoca a execução do programa que será analisado.  
+![Figura-10](Imagens/invocacao.png)  
+  
+A saída deste analisador consiste principalmente de dois logs, criados dentro de um diretório especificado pelo usuário, no arquivo de configurações.
+O primeiro arquivo é o drd.log. Em especial, deve-se observar o campo "races", no final do arquivo (figura 11).
+![Figura-11](Imagens/saida-drd-1.png)  
+  
+O segundo arquivo é o drd_races.log. Este arquivo contém informações detalhadas de cada ocorrência de race no código java. Exemplo de informações encontradas são: momento e thread em que o race ocorreu, linha do código que contém a instrução causadora do race (figura 12).
+![Figura-12](Imagens/drd-races.png)  
+
+Os logs de cada exemplo .java econtram-se disponíveis na pasta "logs" deste projeto.
+
+#3. Comparação entre as ferramentas ODS e Valgrind
 Nessa seção é feito um resumo dos resultados encontrados. Na tabela é possível perceber rapidamente o número de data races encontrados em cada exemplo por cada ferramenta.
 
 | Programa\Ferramenta 	| ODS 	|  Valgrind 	|
