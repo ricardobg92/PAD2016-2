@@ -12,6 +12,9 @@ Professora Andrea Schwertner Charão
 | Exemplo4.java                       | http://stackoverflow.com/questions/10309186/why-does-this-thread-data-race           |                                             |
 | Exemplo5.c                          | http://stackoverflow.com/questions/26998183/how-do-i-deal-with-a-data-race-in-openmp |                                             |
 | Exemplo6.java                       | http://jeremymanson.blogspot.com.br/2008/12/benign-data-races-in-java.html           |                                             |
+| Exemplo7.java                       | http://stackoverflow.com/questions/3836680/data-race-in-java-arraylist-class/                                                       |
+| Exemplo8.java                       | http://stackoverflow.com/questions/10309186/why-does-this-thread-data-race  
+                                        |
 | Prime_omp.c                         | https://docs.oracle.com/cd/E19205-01/820-0619/gdvwv/index.html                       |                                             |
 | Prime_pthread.c                     | https://docs.oracle.com/cd/E19205-01/820-0619/gdvwv/index.html                       |                                             |
 | Programa1.c                         | https://www.ecse.rpi.edu/~wrf/wiki/ParallelComputingSpring2015/openmp/llnl/          |                                             |
